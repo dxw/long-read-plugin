@@ -7,6 +7,9 @@ class PostType implements \Dxw\Iguana\Registerable
     public function register() : void
     {
         add_action('init', [$this, 'registerPostType']);
+        // The value for this filter we want to override is applied with priority 100
+        // So we use priority 1000 to override
+        add_filter('use_block_editor_for_post_type', [$this, 'enforceBlockEditor'], 1000, 2);
     }
 
     public function registerPostType() : void
@@ -32,5 +35,13 @@ class PostType implements \Dxw\Iguana\Registerable
                 'title'
             ]
         ]);
+    }
+
+    public function enforceBlockEditor(bool $useBlockEditor, string $postType) : bool
+    {
+        if ($postType === 'long-read') {
+            return true;
+        }
+        return $useBlockEditor;
     }
 }
