@@ -82,6 +82,6 @@ package-lock.json
 tmp/
 
 ## Build artifacts
-.php_cs.cache
+.php-cs-fixer.cache
 .sass-cache/
 *.bak*

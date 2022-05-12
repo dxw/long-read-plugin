@@ -1,16 +1,16 @@
 <?php
 /**
- * WordPress Plugin
+ * Long Read Plugin
  *
- * @package     WordPressPlugin
+ * @package     LongReadPlugin
  * @author      dxw
  * @copyright   2020
  * @license     MIT
  *
- * @wordpress-plugin
- * Plugin Name: WordPress Plugin
- * Plugin URI: https://github.com/dxw/wordpress-plugin
- * Description: TODO
+ * @long-read-plugin
+ * Plugin Name: Long Read Plugin
+ * Plugin URI: https://github.com/dxw/long-read-plugin
+ * Description: Adds the underlying functionality to enable long-reads
  * Author: dxw
  * Version: 0.1.0
  * Network: True
