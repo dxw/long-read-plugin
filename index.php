@@ -13,7 +13,7 @@
  * Description: Adds the underlying functionality to enable long-reads
  * Author: dxw
  * Version: 0.1.0
- * Network: True
+ * Network: false
  */
 
 $registrar = require __DIR__.'/src/load.php';
