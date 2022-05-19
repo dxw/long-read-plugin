@@ -37,7 +37,11 @@ class PostType implements \Dxw\Iguana\Registerable
         ]);
     }
 
-    public function enforceBlockEditor(bool $useBlockEditor, string $postType) : bool
+    /**
+    * @param bool|null $useBlockEditor
+    * @return bool|null
+    */
+    public function enforceBlockEditor($useBlockEditor, string $postType)
     {
         if ($postType === 'long-read') {
             return true;
