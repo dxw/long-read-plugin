@@ -17,8 +17,9 @@ describe(\LongReadPlugin\PostType::class, function () {
             expect('add_action')->toBeCalled()->once();
             expect('add_action')->toBeCalled()->once()->with('init', [$this->postType, 'registerPostType']);
             allow('add_filter')->toBeCalled();
-            expect('add_filter')->toBeCalled()->once();
+            expect('add_filter')->toBeCalled()->times(2);
             expect('add_filter')->toBeCalled()->once()->with('use_block_editor_for_post_type', [$this->postType, 'enforceBlockEditor'], 1000, 2);
+            expect('add_filter')->toBeCalled()->once()->with('get_user_option_classic-editor-settings', [$this->postType, 'overrideUserEditorSelection'], 10, 1);
             $this->postType->register();
         });
     });
@@ -44,6 +45,45 @@ describe(\LongReadPlugin\PostType::class, function () {
                 $result = $this->postType->enforceBlockEditor(false, 'long-read');
                 expect($result)->toBeA('boolean');
                 expect($result)->toEqual(true);
+            });
+        });
+    });
+
+    describe('->overrideUserEditorSelection()', function () {
+        context('the post_type parameter is not set', function () {
+            it('returns the input', function () {
+                global $_GET;
+                $_GET = [];
+
+                $result = $this->postType->overrideUserEditorSelection('foo');
+
+                expect($result)->toEqual('foo');
+            });
+        });
+
+        context('the post_type parameter is set to something other than long-read', function () {
+            it('returns the input', function () {
+                global $_GET;
+                $_GET = [
+                    'post_type' => 'post'
+                ];
+
+                $result = $this->postType->overrideUserEditorSelection('foo');
+
+                expect($result)->toEqual('foo');
+            });
+        });
+
+        context('the post_type parameter is set to long-read', function () {
+            it('returns "block"', function () {
+                global $_GET;
+                $_GET = [
+                    'post_type' => 'long-read'
+                ];
+
+                $result = $this->postType->overrideUserEditorSelection('foo');
+
+                expect($result)->toEqual('block');
             });
         });
     });
