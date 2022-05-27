@@ -11,7 +11,10 @@ class HeadingAnchors implements \Dxw\Iguana\Registerable
 
     public function enforceAnchors(array $settings) : array
     {
+        /* In WordPress pre-v6, this was an experimental setting */
         $settings['__experimentalGenerateAnchors'] = true;
+        /* From v6 onwards, it's a standard setting */
+        $settings['generateAnchors'] = true;
         return $settings;
     }
 }

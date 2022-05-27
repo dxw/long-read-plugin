@@ -25,6 +25,7 @@ describe(HeadingAnchors::class, function () {
             $settings = [];
             $result = $this->headingAnchors->enforceAnchors($settings);
             expect($result['__experimentalGenerateAnchors'])->toEqual(true);
+            expect($result['generateAnchors'])->toEqual(true);
         });
     });
 });
