@@ -2,6 +2,9 @@
     <div class="govuk-grid-column-two-thirds">
         <article>
             <header>
+                <?php if (LongReadPlugin\ParentTitle::get()) : ?>
+                    <span class="govuk-caption-l"><?php echo LongReadPlugin\ParentTitle::get(); ?></span>
+                <?php endif; ?>
                 <h1><?php the_title(); ?></h1>
             </header>
 
