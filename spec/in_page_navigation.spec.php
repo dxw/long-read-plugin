@@ -73,5 +73,30 @@ describe(LongReadPlugin\InPageNavigation::class, function () {
             expect($result[1]->title)->toEqual("Second heading");
             expect($result[1]->id)->toEqual('second-heading');
         });
+
+        it('returns items for heading blocks within block-groups)', function () {
+            global $post;
+            $post->post_content = 'Some content';
+            $blocks = [
+                [
+                    'blockName' => 'core/group',
+                    'attrs' => [],
+                    'innerBlocks' => [
+                        [
+                            'blockName' => 'core/heading',
+                            'attrs' => [],
+                            'innerHTML' => '<h2 id="first-heading">First heading</h2>'
+                        ],
+                    ]
+                ]
+            ];
+            allow('parse_blocks')->toBeCalled()->andReturn($blocks);
+
+            $result = $this->inPageNavigation->getItems();
+
+            expect(count($result))->toEqual(1);
+            expect($result[0]->title)->toEqual("First heading");
+            expect($result[0]->id)->toEqual('first-heading');
+        });
     });
 });
