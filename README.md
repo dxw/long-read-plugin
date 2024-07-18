@@ -77,3 +77,18 @@ Run the linters:
 vendor/bin/psalm
 vendor/bin/php-cs-fixer fix
 ```
+
+## CHANGELOG and versioning
+
+Please update the CHANGELOG as you develop, and publish and tag new releases.
+
+As well as the individual version tags, we also have a major version tag (currently v1) that tracks the latest release for that major version. That has to be manually updated after you've done the release on GitHub as follows:
+
+(e.g. if you'd just published v1.6.0):
+
+```sh
+git checkout main
+git fetch --tags -f
+git tag -f v1 v1.6.0
+git push origin -f --tags
+```
