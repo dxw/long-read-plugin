@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Long Read Plugin
  *
