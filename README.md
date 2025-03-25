@@ -59,6 +59,10 @@ Recommended plugin to run alongside this:
     ```
 1. Style your long read template as required.
 
+## PHP version
+
+This plugin builds on PHP 8.2 and deploys on PHP 8.3.
+
 ## Development
 
 Install the dependencies:
