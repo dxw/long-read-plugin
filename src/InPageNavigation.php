@@ -7,7 +7,7 @@ class InPageNavigation
 	/** @var array $inPageNavItems */
 	private $inPageNavItems = [];
 
-	private function parseHeading(string $html): \stdClass
+	private function parseHeading(string $html): object
 	{
 		$matches = [];
 		preg_match('/(id=")(.*?)"/', $html, $matches);
