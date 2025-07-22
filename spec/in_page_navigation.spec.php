@@ -24,6 +24,26 @@ describe(LongReadPlugin\InPageNavigation::class, function () {
 			expect($result)->toEqual([]);
 		});
 
+		it('does not return anything for heading blocks with no content', function () {
+			global $post;
+			$post->post_content = 'Some content';
+			$blocks = [
+				[
+					'blockName' => 'core/heading',
+					'attrs' => [
+						'level' => 2
+					],
+					'innerHTML' => '<h2 class="wp-block-heading"></h2>',
+					'innerContent' => ['<h2 class="wp-block-heading"></h2>']
+				],
+			];
+			allow('parse_blocks')->toBeCalled()->andReturn($blocks);
+
+			$result = $this->inPageNavigation->getItems();
+
+			expect($result)->toEqual([]);
+		});
+
 		it('does not return anything for heading blocks not of level 2', function () {
 			global $post;
 			$post->post_content = 'Some content';
