@@ -1,4 +1,4 @@
-# Long Read Plugin
+# Long Read Plugin
 
 This plugin provides the basic functionality for adding "long read" items (i.e. multi-page documents divided into "chapters", with in-chapter and between-chapter navigation) to a WordPress site.
 
@@ -65,21 +65,18 @@ This plugin builds on PHP 8.2 and deploys on PHP 8.3.
 
 ## Development
 
+This plugin implements the [scripts-to-rule-them-all](https://github.com/github/scripts-to-rule-them-all) pattern.
+
 Install the dependencies:
 
-```
-composer install
+```sh
+script/update
 ```
 
 Run the tests:
-```
-vendor/bin/kahlan spec
-```
 
-Run the linters:
-```
-vendor/bin/psalm
-vendor/bin/php-cs-fixer fix
+```sh
+script/test
 ```
 
 ## CHANGELOG and versioning
