@@ -1,0 +1,6 @@
+#!/bin/sh
+
+# script/bootstrap: Resolve all dependencies that the plugin requires
+
+echo "==> Installing composer dependencies..."
+composer install

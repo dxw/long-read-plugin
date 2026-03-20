@@ -1,0 +1,14 @@
+#!/bin/sh
+
+# script/test: Run test suite and linters
+
+script/update
+
+echo "==> Running PHP CS Fixer..."
+vendor/bin/php-cs-fixer fix --dry-run --verbose
+
+echo "===> Running static code analysis..."
+vendor/bin/psalm --error-level=2 --find-unused-psalm-suppress
+
+echo "===> Running unit tests..."
+vendor/bin/kahlan spec
