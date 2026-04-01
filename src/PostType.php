@@ -18,27 +18,32 @@ class PostType implements \Dxw\Iguana\Registerable
 
 	public function registerPostType(): void
 	{
-		register_post_type('long-read', [
-			'label' => 'Long Reads',
-			'labels' => [
-				'singular_name' => 'Long Read',
-				'add_new_item' => 'Add New Long Read',
-				'edit_item' => 'Edit Long Read',
-				'new_item' => 'New Long Read',
-				'view_item' => 'View Long Read',
-				'view_items' => 'View Long Reads'
-			],
-			'public' => true,
-			'hierarchical' => true,
-			'show_in_rest' => true,
-			'menu_icon' => 'dashicons-feedback',
-			'supports' => [
-				'revisions',
-				'page-attributes',
-				'editor',
-				'title'
-			]
-		]);
+	/** @var bool $activatePostType */
+	$activatePostType = get_field('long_read_plugin_toggle_post_type', 'option');
+		
+		if (!$activatePostType) {
+			register_post_type('long-read', [
+				'label' => 'Long Reads',
+				'labels' => [
+					'singular_name' => 'Long Read',
+					'add_new_item' => 'Add New Long Read',
+					'edit_item' => 'Edit Long Read',
+					'new_item' => 'New Long Read',
+					'view_item' => 'View Long Read',
+					'view_items' => 'View Long Reads'
+				],
+				'public' => true,
+				'hierarchical' => true,
+				'show_in_rest' => true,
+				'menu_icon' => 'dashicons-feedback',
+				'supports' => [
+					'revisions',
+					'page-attributes',
+					'editor',
+					'title'
+				]
+			]);
+		}
 	}
 
 	/**

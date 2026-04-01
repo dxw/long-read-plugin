@@ -27,7 +27,14 @@ describe(\LongReadPlugin\PostType::class, function () {
 	describe('->registerPostType()', function () {
 		it('registers the post type', function () {
 			allow('register_post_type')->toBeCalled();
+			allow('get_field')->toBeCalled()->andReturn(false);
 			expect('register_post_type')->toBeCalled()->once()->with(Arg::toBeA('string'), Arg::toBeAn('array'));
+			$this->postType->registerPostType();
+		});
+		it('does not register the post type if the option is set to deactivate it', function () {
+			allow('register_post_type')->toBeCalled();
+			allow('get_field')->toBeCalled()->andReturn(true);
+			expect('register_post_type')->not->toBeCalled();
 			$this->postType->registerPostType();
 		});
 	});
