@@ -50,6 +50,16 @@ class Options implements \Dxw\Iguana\Registerable
 						'ui_on_text' => '',
 						'ui_off_text' => '',
 					],
+					[
+						'key' => 'field_long_read_plugin_toggle_post_type',
+						'label' => 'Toggle custom post type',
+						'name' => 'long_read_plugin_toggle_post_type',
+						'type' => 'true_false',
+						'instructions' => 'Deactivate the custom post type for long read posts?',
+						'message' => '',
+						'default_value' => 0,
+						'ui' => 0,
+					],
 				],
 				'location' => [
 					[
