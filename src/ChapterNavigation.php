@@ -11,7 +11,7 @@ class ChapterNavigation
 		$parentPost = $potentialParent ? $potentialParent : $post;
 		$chapterPosts = get_posts([
 			'post_parent' => $parentPost->ID,
-			'post_type' => 'long-read',
+			'post_type' => 'any',
 			'posts_per_page' => -1,
 			'orderby' => 'menu_order',
 			'order' => 'ASC'
