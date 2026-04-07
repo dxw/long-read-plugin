@@ -8,7 +8,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 	});
 
 	describe('->getItems()', function () {
-		context('global post is the parent long-read post', function () {
+		context('global post is a parent post', function () {
 			it('returns an array of items with the first item as the current post, which will have a null url property', function () {
 				global $post;
 				$post = (object) [
@@ -28,7 +28,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				]);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
-					'post_type' => 'long-read',
+					'post_type' => 'any',
 					'posts_per_page' => -1,
 					'orderby' => 'menu_order',
 					'order' => 'ASC'
@@ -47,7 +47,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 			});
 		});
 
-		context('global post is a child long-read post', function () {
+		context('global post is a child post', function () {
 			it('returns an array of items with the current post in the appropriate place, and with a null url property', function () {
 				global $post;
 				$post = (object) [
@@ -71,7 +71,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				]);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
-					'post_type' => 'long-read',
+					'post_type' => 'any',
 					'posts_per_page' => -1,
 					'orderby' => 'menu_order',
 					'order' => 'ASC'
