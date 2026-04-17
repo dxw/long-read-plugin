@@ -11,9 +11,10 @@ class InPageNavigation
 	{
 		$matches = [];
 		preg_match('/(id=")(.*?)"/', $html, $matches);
+		$tmp_id = (isset($matches[2])) ? $matches[2] : '';
 		return (object) [
 			'title' => trim(strip_tags($html)),
-			'id' => $matches[2]
+			'id' => $tmp_id
 		];
 	}
 
