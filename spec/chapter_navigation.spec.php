@@ -15,6 +15,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
+				allow('current_user_can')->toBeCalled();
 				allow('get_post_parent')->toBeCalled()->andReturn(false);
 				allow('get_posts')->toBeCalled()->andReturn([
 					(object) [
@@ -28,6 +29,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				]);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
+					'post_status' => ['publish'],
 					'post_type' => 'any',
 					'posts_per_page' => -1,
 					'orderby' => 'menu_order',
@@ -58,6 +60,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
+				allow('current_user_can')->toBeCalled();
 				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
 				allow('get_posts')->toBeCalled()->andReturn([
 					$post = (object) [
@@ -71,6 +74,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				]);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
+					'post_status' => ['publish'],
 					'post_type' => 'any',
 					'posts_per_page' => -1,
 					'orderby' => 'menu_order',
@@ -87,6 +91,48 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				expect($result[1]->url)->toEqual(null);
 				expect($result[2]->title)->toEqual('Chapter Three');
 				expect($result[2]->url)->toEqual('http://chapter-three-link');
+			});
+		});
+
+		context('when the current logged in user can edit posts', function () {
+			it('includes draft posts in the query and returns them in the result', function () {
+				global $post;
+				$post = (object) [
+					'ID' => 1011,
+					'post_title' => 'Chapter Four'
+				];
+				$parentPost = (object) [
+					'ID' => 123,
+					'post_title' => 'Chapter One',
+					'post_status' => 'publish'
+				];
+				allow('current_user_can')->toBeCalled()->andReturn(true);
+				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
+				allow('get_posts')->toBeCalled()->andReturn([
+					(object) [
+						'ID' => 456,
+						'post_title' => 'Chapter Two',
+						'post_status' => 'publish'
+					],
+					(object) [
+						'ID' => 789,
+						'post_title' => 'Chapter Three',
+						'post_status' => 'draft'
+					]
+				]);
+				expect('get_posts')->toBeCalled()->once()->with([
+					'post_parent' => 123,
+					'post_status' => ['publish', 'draft'],
+					'post_type' => 'any',
+					'posts_per_page' => -1,
+					'orderby' => 'menu_order',
+					'order' => 'ASC'
+				]);
+				allow('get_permalink')->toBeCalled();
+
+				$result = $this->chapterNavigation->getItems();
+
+				expect(count($result))->toEqual(3);
 			});
 		});
 	});
