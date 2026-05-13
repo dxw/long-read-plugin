@@ -15,7 +15,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
-				allow('current_user_can')->toBeCalled();
+				allow('apply_filters')->toBeCalled()->andReturn(['publish']);
 				allow('get_post_parent')->toBeCalled()->andReturn(false);
 				allow('get_posts')->toBeCalled()->andReturn([
 					(object) [
@@ -27,6 +27,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 						'post_title' => 'Chapter Three'
 					],
 				]);
+				expect('apply_filters')->toBeCalled()->once()->with('long_read_plugin_post_status', ['publish']);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
 					'post_status' => ['publish'],
@@ -60,7 +61,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
-				allow('current_user_can')->toBeCalled();
+				allow('apply_filters')->toBeCalled()->andReturn(['publish']);
 				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
 				allow('get_posts')->toBeCalled()->andReturn([
 					$post = (object) [
@@ -72,6 +73,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 						'post_title' => 'Chapter Three'
 					]
 				]);
+				expect('apply_filters')->toBeCalled()->once()->with('long_read_plugin_post_status', ['publish']);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
 					'post_status' => ['publish'],
@@ -94,8 +96,8 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 			});
 		});
 
-		context('when the current logged in user can edit posts', function () {
-			it('includes draft posts in the query and returns them in the result', function () {
+		context('when long read post status filter includes drafts', function () {
+			it('queries with filtered post statuses and returns those posts', function () {
 				global $post;
 				$post = (object) [
 					'ID' => 1011,
@@ -106,7 +108,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'post_title' => 'Chapter One',
 					'post_status' => 'publish'
 				];
-				allow('current_user_can')->toBeCalled()->andReturn(true);
+				allow('apply_filters')->toBeCalled()->andReturn(['publish', 'draft']);
 				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
 				allow('get_posts')->toBeCalled()->andReturn([
 					(object) [
@@ -120,6 +122,7 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 						'post_status' => 'draft'
 					]
 				]);
+				expect('apply_filters')->toBeCalled()->once()->with('long_read_plugin_post_status', ['publish']);
 				expect('get_posts')->toBeCalled()->once()->with([
 					'post_parent' => 123,
 					'post_status' => ['publish', 'draft'],

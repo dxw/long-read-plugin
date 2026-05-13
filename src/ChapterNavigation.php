@@ -6,10 +6,8 @@ class ChapterNavigation
 {
 	public function getItems(): array
 	{
-		$postStatus = ['publish'];
-		if(current_user_can('edit_posts')) {
-			array_push($postStatus, 'draft');
-		}
+		$postStatus = apply_filters('long_read_plugin_post_status', ['publish']);
+
 		global $post;
 		$potentialParent = get_post_parent($post);
 		$parentPost = $potentialParent ? $potentialParent : $post;
