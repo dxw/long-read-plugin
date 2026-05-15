@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Filter replaces hard-coded addition of draft posts to navigation
+- Filter url passed to chapter navigation items
 
 ## [v2.3.0] - 2026-04-29
 

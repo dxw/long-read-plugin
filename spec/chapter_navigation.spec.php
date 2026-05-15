@@ -1,7 +1,5 @@
 <?php
 
-use Kahlan\Arg;
-
 describe(\LongReadPlugin\ChapterNavigation::class, function () {
 	beforeEach(function () {
 		$this->chapterNavigation = new \LongReadPlugin\ChapterNavigation();
@@ -15,7 +13,18 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
-				allow('apply_filters')->toBeCalled()->andReturn(['publish']);
+				$chapterUrlCallArgs = [];
+				allow('apply_filters')->toBeCalled()->andRun(function (string $filterName, $value, $chapterPostId = null) use (&$chapterUrlCallArgs) {
+					if ($filterName === 'long_read_plugin_post_status') {
+						return ['publish'];
+					}
+
+					if ($filterName === 'long_read_plugin_chapter_url') {
+						$chapterUrlCallArgs[] = $chapterPostId;
+					}
+
+					return $value;
+				});
 				allow('get_post_parent')->toBeCalled()->andReturn(false);
 				allow('get_posts')->toBeCalled()->andReturn([
 					(object) [
@@ -39,6 +48,9 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				allow('get_permalink')->toBeCalled()->andReturn('http://chapter-two-link', 'http://chapter-three-link');
 
 				$result = $this->chapterNavigation->getItems();
+				expect($chapterUrlCallArgs[0])->toEqual(123);
+				expect($chapterUrlCallArgs[1])->toEqual(456);
+				expect($chapterUrlCallArgs[2])->toEqual(789);
 
 				expect(count($result))->toEqual(3);
 				expect($result[0]->title)->toEqual('Chapter One');
@@ -61,10 +73,21 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'ID' => 123,
 					'post_title' => 'Chapter One'
 				];
-				allow('apply_filters')->toBeCalled()->andReturn(['publish']);
+				$chapterUrlCallArgs = [];
+				allow('apply_filters')->toBeCalled()->andRun(function (string $filterName, $value, $chapterPostId = null) use (&$chapterUrlCallArgs) {
+					if ($filterName === 'long_read_plugin_post_status') {
+						return ['publish'];
+					}
+
+					if ($filterName === 'long_read_plugin_chapter_url') {
+						$chapterUrlCallArgs[] = $chapterPostId;
+					}
+
+					return $value;
+				});
 				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
 				allow('get_posts')->toBeCalled()->andReturn([
-					$post = (object) [
+					(object) [
 						'ID' => 456,
 						'post_title' => 'Chapter Two'
 					],
@@ -85,6 +108,9 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				allow('get_permalink')->toBeCalled()->andReturn('http://chapter-one-link', 'http://chapter-three-link');
 
 				$result = $this->chapterNavigation->getItems();
+				expect($chapterUrlCallArgs[0])->toEqual(123);
+				expect($chapterUrlCallArgs[1])->toEqual(456);
+				expect($chapterUrlCallArgs[2])->toEqual(789);
 
 				expect(count($result))->toEqual(3);
 				expect($result[0]->title)->toEqual('Chapter One');
@@ -108,7 +134,13 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 					'post_title' => 'Chapter One',
 					'post_status' => 'publish'
 				];
-				allow('apply_filters')->toBeCalled()->andReturn(['publish', 'draft']);
+				allow('apply_filters')->toBeCalled()->andRun(function (string $filterName, $value) {
+					if ($filterName === 'long_read_plugin_post_status') {
+						return ['publish', 'draft'];
+					}
+
+					return $value;
+				});
 				allow('get_post_parent')->toBeCalled()->andReturn($parentPost);
 				allow('get_posts')->toBeCalled()->andReturn([
 					(object) [
@@ -136,6 +168,42 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				$result = $this->chapterNavigation->getItems();
 
 				expect(count($result))->toEqual(3);
+			});
+		});
+
+		context('when long read chapter URL filter changes an item URL', function () {
+			it('returns the filtered chapter URL in the navigation item', function () {
+				global $post;
+				$post = (object) [
+					'ID' => 123,
+					'post_title' => 'Chapter One'
+				];
+				allow('apply_filters')->toBeCalled()->andRun(function (string $filterName, $value, $chapterPostId = null) {
+					if ($filterName === 'long_read_plugin_post_status') {
+						return ['publish'];
+					}
+
+					if (
+						$filterName === 'long_read_plugin_chapter_url'
+						&& $chapterPostId === 456
+					) {
+						return 'http://filtered-chapter-two-link';
+					}
+
+					return $value;
+				});
+				allow('get_post_parent')->toBeCalled()->andReturn(false);
+				allow('get_posts')->toBeCalled()->andReturn([
+					(object) [
+						'ID' => 456,
+						'post_title' => 'Chapter Two'
+					]
+				]);
+				allow('get_permalink')->toBeCalled()->andReturn('http://chapter-two-link');
+
+				$result = $this->chapterNavigation->getItems();
+
+				expect($result[1]->url)->toEqual('http://filtered-chapter-two-link');
 			});
 		});
 	});
