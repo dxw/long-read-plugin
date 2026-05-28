@@ -18,8 +18,10 @@ class PostType implements \Dxw\Iguana\Registerable
 
 	public function registerPostType(): void
 	{
-		/** @var bool $activatePostType */
-		$deactivatePostType = get_field('long_read_plugin_toggle_post_type', 'option');
+		$deactivatePostType = false;
+		if (function_exists('get_field')) {
+			$deactivatePostType = get_field('long_read_plugin_toggle_post_type', 'option');
+		}
 
 		if (!$deactivatePostType) {
 			register_post_type('long-read', [
