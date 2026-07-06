@@ -53,10 +53,13 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				expect($chapterUrlCallArgs[2])->toEqual(789);
 
 				expect(count($result))->toEqual(3);
+				expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[0]->title)->toEqual('Chapter One');
 				expect($result[0]->url)->toEqual(null);
+				expect($result[1])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[1]->title)->toEqual('Chapter Two');
 				expect($result[1]->url)->toEqual('http://chapter-two-link');
+				expect($result[2])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[2]->title)->toEqual('Chapter Three');
 				expect($result[2]->url)->toEqual('http://chapter-three-link');
 			});
@@ -113,10 +116,13 @@ describe(\LongReadPlugin\ChapterNavigation::class, function () {
 				expect($chapterUrlCallArgs[2])->toEqual(789);
 
 				expect(count($result))->toEqual(3);
+				expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[0]->title)->toEqual('Chapter One');
 				expect($result[0]->url)->toEqual('http://chapter-one-link');
+				expect($result[1])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[1]->title)->toEqual('Chapter Two');
 				expect($result[1]->url)->toEqual(null);
+				expect($result[2])->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationItem::class);
 				expect($result[2]->title)->toEqual('Chapter Three');
 				expect($result[2]->url)->toEqual('http://chapter-three-link');
 			});
