@@ -5,7 +5,7 @@ namespace LongReadPlugin;
 class InPageNavigationItem
 {
 	public readonly string $title;
-	public readonly string $id;
+	public readonly ?string $id;
 
 	public function __construct(string $title, ?string $id)
 	{
