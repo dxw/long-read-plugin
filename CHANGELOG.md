@@ -11,7 +11,9 @@ and this project adheres to
 ### Changed
 
 - Use custom classes for navigation data
-- Create interfaces for page navigation
+- Create interfaces for page navigation 
+- [BREAKING] default value for subItems in PageNavigation introduced as part of interface refactor
+- Create interface for parent title
 
 ## [v2.4.1] - 2026-05-28
 
