@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-class InPageNavigation
+class HierarchicalInPageNavigation implements InPageNavigationInterface
 {
 	/** @var array $inPageNavItems */
 	private $inPageNavItems = [];

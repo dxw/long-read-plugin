@@ -1,8 +1,8 @@
 <?php
 
-namespace LongReadPlugin ;
+namespace LongReadPlugin;
 
-class ChapterNavigation
+class HierarchicalChapterNavigation implements ChapterNavigationInterface
 {
 	public function getItems(): array
 	{
