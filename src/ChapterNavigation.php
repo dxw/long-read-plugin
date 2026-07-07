@@ -23,10 +23,10 @@ class ChapterNavigation
 		$currentPostId = $post->ID;
 		$chapterNavigationItems = [];
 		foreach ($chapterPosts as $chapterPost) {
-			$chapterNavigationItems[] = (object) [
-				'title' => $chapterPost->post_title,
-				'url' => apply_filters('long_read_plugin_chapter_url', $chapterPost->ID == $currentPostId ? null : get_permalink($chapterPost), $chapterPost->ID)
-			];
+			$chapterNavigationItems[] = new ChapterNavigationItem(
+				$chapterPost->post_title,
+				apply_filters('long_read_plugin_chapter_url', $chapterPost->ID == $currentPostId ? null : get_permalink($chapterPost), $chapterPost->ID)
+			);
 		}
 		return $chapterNavigationItems;
 	}
