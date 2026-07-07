@@ -4,16 +4,16 @@ namespace LongReadPlugin;
 
 class ParentTitle
 {
-	/**
-	* @return string|null
-	*/
-	public static function get()
+
+	private static ParentTitleGetter $getter;
+	
+	public function __construct(ParentTitleGetter $getter)
 	{
-		global $post;
-		$ancestors = get_post_ancestors($post);
-		$topLevelAncestor = array_pop($ancestors);
-		if ($topLevelAncestor) {
-			return get_the_title($topLevelAncestor);
-		}
+		self::$getter = $getter;
+	}
+
+	public function get(): ?string
+	{
+		return self::$getter->get();
 	}
 }
