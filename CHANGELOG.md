@@ -11,6 +11,7 @@ and this project adheres to
 ### Changed
 
 - Use custom classes for navigation data
+- Create interfaces for page navigation
 
 ## [v2.4.1] - 2026-05-28
 
