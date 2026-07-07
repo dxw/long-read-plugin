@@ -6,6 +6,7 @@ class ChapterNavigationItem
 {
 	public readonly string $title;
 	public readonly ?string $url;
+	public array $subItems = [];
 
 	public function __construct(string $title, ?string $url)
 	{
