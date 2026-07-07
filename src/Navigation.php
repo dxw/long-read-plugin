@@ -4,10 +4,10 @@ namespace LongReadPlugin;
 
 class Navigation
 {
-	private static ChapterNavigation $chapterNavigation;
-	private static InPageNavigation $inPageNavigation;
+	private static ChapterNavigationInterface $chapterNavigation;
+	private static InPageNavigationInterface $inPageNavigation;
 
-	public function __construct(ChapterNavigation $chapterNavigation, InPageNavigation $inPageNavigation)
+	public function __construct(ChapterNavigationInterface $chapterNavigation, InPageNavigationInterface $inPageNavigation)
 	{
 		static::$chapterNavigation = $chapterNavigation;
 		static::$inPageNavigation = $inPageNavigation;
