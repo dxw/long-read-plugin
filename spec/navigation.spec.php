@@ -13,8 +13,8 @@ describe(LongReadPlugin\Navigation::class, function () {
 		});
 
 		it('returns an array of items where the in page nav is mapped to the subItems property of the current post item in the chapter nav items', function () {
-			$this->chapterNavigation = Double::instance(['extends' => '\LongReadPlugin\ChapterNavigation']);
-			$this->inPageNavigation = Double::instance(['extends' => '\LongReadPlugin\InPageNavigation']);
+			$this->chapterNavigation = Double::instance(['extends' => '\LongReadPlugin\HierarchicalChapterNavigation']);
+			$this->inPageNavigation = Double::instance(['extends' => '\LongReadPlugin\HierarchicalInPageNavigation']);
 			allow($this->chapterNavigation)->toReceive('getItems')->andReturn([
 				(object) [
 					'title' => 'Chapter One',

@@ -1,8 +1,8 @@
 <?php
 
-describe(LongReadPlugin\InPageNavigation::class, function () {
+describe(LongReadPlugin\HierarchicalInPageNavigation::class, function () {
 	beforeEach(function () {
-		$this->inPageNavigation = new \LongReadPlugin\InPageNavigation();
+		$this->inPageNavigation = new \LongReadPlugin\HierarchicalInPageNavigation();
 	});
 
 	describe('->getItems()', function () {
@@ -88,10 +88,10 @@ describe(LongReadPlugin\InPageNavigation::class, function () {
 			$result = $this->inPageNavigation->getItems();
 
 			expect(count($result))->toEqual(2);
-		expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
-		expect($result[0]->title)->toEqual("First heading");
-		expect($result[0]->id)->toEqual('first-heading');
-		expect($result[1])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
+			expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
+			expect($result[0]->title)->toEqual("First heading");
+			expect($result[0]->id)->toEqual('first-heading');
+			expect($result[1])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
 			expect($result[1]->title)->toEqual("Second heading");
 			expect($result[1]->id)->toEqual('second-heading');
 		});
@@ -116,7 +116,9 @@ describe(LongReadPlugin\InPageNavigation::class, function () {
 
 			$result = $this->inPageNavigation->getItems();
 
-			expect(count($result))->toEqual(1);		expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);			expect($result[0]->title)->toEqual("First heading");
+			expect(count($result))->toEqual(1);
+			expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
+			expect($result[0]->title)->toEqual("First heading");
 			expect($result[0]->id)->toEqual('first-heading');
 		});
 	});
