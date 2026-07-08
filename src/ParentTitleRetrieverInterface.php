@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-interface ParentTitleGetter
+interface ParentTitleRetrieverInterface
 {
 	public function get(): ?string;
 }

@@ -8,3 +8,6 @@ $registrar->addInstance(new \LongReadPlugin\Navigation(
 ));
 $registrar->addInstance(new \LongReadPlugin\Options());
 $registrar->addInstance(new \LongReadPlugin\Template());
+$registrar->addInstance(new \LongReadPlugin\ParentTitle(
+	new \LongReadPlugin\MultipageParentTitle()
+));

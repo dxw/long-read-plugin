@@ -5,15 +5,18 @@ namespace LongReadPlugin;
 class ParentTitle
 {
 
-	private static ParentTitleGetter $getter;
+	private static ParentTitleRetrieverInterface $getter;
 	
-	public function __construct(ParentTitleGetter $getter)
+	public function __construct(ParentTitleRetrieverInterface $getter)
 	{
 		self::$getter = $getter;
 	}
 
-	public function get(): ?string
+	public static function get(): ?string
 	{
+		if (!isset(self::$getter)) {
+			return null;
+		}
 		return self::$getter->get();
 	}
 }
