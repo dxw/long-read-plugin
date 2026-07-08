@@ -2,9 +2,9 @@
 
 namespace LongReadPlugin;
 
-class MultipageParentTitle implements ParentTitleGetter
+class MultipageParentTitle implements ParentTitleRetrieverInterface
 {
-	public function get(): string | null
+	public function get(): ?string
 	{
 		global $post;
 		$ancestors = get_post_ancestors($post);
