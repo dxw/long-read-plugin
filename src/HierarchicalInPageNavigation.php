@@ -10,10 +10,13 @@ class HierarchicalInPageNavigation implements InPageNavigationInterface
 	private function parseHeading(string $html): InPageNavigationItem
 	{
 		$matches = [];
-		preg_match('/(id=")(.*?)"/', $html, $matches);
+		$id = null;
+		if (preg_match('/(id=")(.*?)"/', $html, $matches)) {
+			$id = $matches[2] ?? null;
+		}
 		return new InPageNavigationItem(
 			trim(strip_tags($html)),
-			$matches[2]
+			$id
 		);
 	}
 
