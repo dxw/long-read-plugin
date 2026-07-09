@@ -3,11 +3,10 @@
 describe(\LongReadPlugin\ParentTitle::class, function () {
 	describe('::get()', function () {
 		it('calls the getter instance method and returns its result', function () {
-			$mockGetter = new class implements \LongReadPlugin\ParentTitleRetrieverInterface {
-				public function get(): ?string {
-					return 'Parent Title';
-				}
-			};
+			$mockGetter = \Kahlan\Plugin\Double::instance([
+				'implements' => \LongReadPlugin\ParentTitleRetrieverInterface::class
+			]);
+			allow($mockGetter)->toReceive('get')->andReturn('Parent Title');
 
 			new \LongReadPlugin\ParentTitle($mockGetter);
 			$result = \LongReadPlugin\ParentTitle::get();
@@ -16,11 +15,10 @@ describe(\LongReadPlugin\ParentTitle::class, function () {
 		});
 
 		it('returns null when getter returns null', function () {
-			$mockGetter = new class implements \LongReadPlugin\ParentTitleRetrieverInterface {
-				public function get(): ?string {
-					return null;
-				}
-			};
+			$mockGetter = \Kahlan\Plugin\Double::instance([
+				'implements' => \LongReadPlugin\ParentTitleRetrieverInterface::class
+			]);
+			allow($mockGetter)->toReceive('get')->andReturn(null);
 
 			new \LongReadPlugin\ParentTitle($mockGetter);
 			$result = \LongReadPlugin\ParentTitle::get();

@@ -1,6 +1,13 @@
 <?php
 
 describe(\LongReadPlugin\MultipageParentTitle::class, function () {
+	beforeEach(function () {
+		$this->parentTitle = new \LongReadPlugin\MultipageParentTitle();
+	});
+	it('implements the ParentTitleRetrieverInterface', function () {
+		expect($this->parentTitle)->toBeAnInstanceOf(\LongReadPlugin\ParentTitleRetrieverInterface::class);
+	});
+
 	describe('->get()', function () {
 		it('returns null when post has no ancestors', function () {
 			global $post;
@@ -10,8 +17,7 @@ describe(\LongReadPlugin\MultipageParentTitle::class, function () {
 
 			allow('get_post_ancestors')->toBeCalled()->andReturn([]);
 
-			$getter = new \LongReadPlugin\MultipageParentTitle();
-			$result = $getter->get();
+			$result = $this->parentTitle->get();
 
 			expect($result)->toBeNull();
 		});
@@ -25,8 +31,7 @@ describe(\LongReadPlugin\MultipageParentTitle::class, function () {
 			allow('get_post_ancestors')->toBeCalled()->andReturn([456, 123]);
 			allow('get_the_title')->toBeCalled()->andReturn('Top Level Post');
 
-			$getter = new \LongReadPlugin\MultipageParentTitle();
-			$result = $getter->get();
+			$result = $this->parentTitle->get();
 
 			expect($result)->toEqual('Top Level Post');
 		});
@@ -40,8 +45,7 @@ describe(\LongReadPlugin\MultipageParentTitle::class, function () {
 			allow('get_post_ancestors')->toBeCalled()->andReturn([456, 123]);
 			allow('get_the_title')->toBeCalled()->andReturn(false);
 
-			$getter = new \LongReadPlugin\MultipageParentTitle();
-			$result = $getter->get();
+			$result = $this->parentTitle->get();
 
 			expect($result)->toBeNull();
 		});
@@ -55,8 +59,7 @@ describe(\LongReadPlugin\MultipageParentTitle::class, function () {
 			allow('get_post_ancestors')->toBeCalled()->andReturn([123]);
 			allow('get_the_title')->toBeCalled()->andReturn('Parent Post');
 
-			$getter = new \LongReadPlugin\MultipageParentTitle();
-			$result = $getter->get();
+			$result = $this->parentTitle->get();
 
 			expect($result)->toEqual('Parent Post');
 		});
