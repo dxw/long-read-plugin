@@ -30,9 +30,9 @@ describe(\LongReadPlugin\MultipageParentTitle::class, function () {
 
 			allow('get_post_ancestors')->toBeCalled()->andReturn([456, 123]);
 			allow('get_the_title')->toBeCalled()->andReturn('Top Level Post');
+			expect('get_the_title')->toBeCalled()->with(123);
 
 			$result = $this->parentTitle->get();
-
 			expect($result)->toEqual('Top Level Post');
 		});
 
