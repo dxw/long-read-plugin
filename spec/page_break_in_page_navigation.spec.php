@@ -142,5 +142,53 @@ describe(LongReadPlugin\PageBreakInPageNavigation::class, function () {
 			expect($result[0]->title)->toEqual('ACF grouped heading');
 			expect($result[0]->id)->toEqual('acf-grouped');
 		});
+		it('parses only the current page markup from post content', function () {
+			global $post;
+			$post = (object) [
+				'post_content' => '<h2 id="one">Page 1</h2><!--nextpage--><h2 id="two">Page 2</h2>'
+			];
+
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
+			allow('parse_blocks')->toBeCalled()->andReturn([]);
+
+			expect('parse_blocks')->toBeCalled()->with('<h2 id="two">Page 2</h2>');
+
+			$this->inPageNavigation->getItems();
+		});
+		it('only selects items from the current page', function () {
+			global $post;
+			$post = (object) [
+				'ID' => 123,
+				'post_content' => '<h2 id="page1">Page 1 Heading</h2><!--nextpage--><h2 id="page2">Page 2 Heading</h2>'
+			];
+
+			allow('parse_blocks')->toBeCalled()->andRun(function (string $content) {
+				if (strpos($content, 'Page 2 Heading') !== false) {
+					return [
+						[
+							'blockName' => 'core/heading',
+							'attrs' => ['level' => 2],
+							'innerHTML' => '<h2 id="page2">Page 2 Heading</h2>'
+						],
+					];
+				}
+
+				return [
+					[
+						'blockName' => 'core/heading',
+						'attrs' => ['level' => 2],
+						'innerHTML' => '<h2 id="page1">Page 1 Heading</h2>'
+					],
+				];
+			});
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
+
+			$result = $this->inPageNavigation->getItems();
+
+			expect(count($result))->toEqual(1);
+			expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
+			expect($result[0]->title)->toEqual('Page 2 Heading');
+			expect($result[0]->id)->toEqual('page2');
+		});
 	});
 });
