@@ -7,6 +7,18 @@ class PageBreakInPageNavigation implements InPageNavigationInterface
 	/** @var array $inPageNavItems */
 	private $inPageNavItems = [];
 
+	private function findHeadingMarkup(string $markup): void
+	{
+		$matches = [];
+		preg_match_all('~<h2[^>]*>.*?</h2>~is', $markup, $matches);
+		foreach ($matches[0] as $headingHtml) {
+			if (empty(trim(strip_tags($headingHtml)))) {
+				continue;
+			}
+			$this->inPageNavItems[] = $this->parseHeading($headingHtml);
+		}
+	}
+
 	private function getCurrentPageMarkup(): string
 	{
 		global $post;
@@ -46,8 +58,12 @@ class PageBreakInPageNavigation implements InPageNavigationInterface
 	public function getItems(): array
 	{
 		$this->inPageNavItems = [];
-		$blocks = parse_blocks($this->getCurrentPageMarkup());
+		$currentPageMarkup = $this->getCurrentPageMarkup();
+		$blocks = parse_blocks($currentPageMarkup);
 		$this->findHeadingBlocks($blocks);
+		if (count($this->inPageNavItems) === 0) {
+			$this->findHeadingMarkup($currentPageMarkup);
+		}
 		return $this->inPageNavItems;
 	}
 }

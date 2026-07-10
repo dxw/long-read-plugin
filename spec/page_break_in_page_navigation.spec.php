@@ -142,6 +142,7 @@ describe(LongReadPlugin\PageBreakInPageNavigation::class, function () {
 			expect($result[0]->title)->toEqual('ACF grouped heading');
 			expect($result[0]->id)->toEqual('acf-grouped');
 		});
+
 		it('parses only the current page markup from post content', function () {
 			global $post;
 			$post = (object) [
@@ -150,11 +151,28 @@ describe(LongReadPlugin\PageBreakInPageNavigation::class, function () {
 
 			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
 			allow('parse_blocks')->toBeCalled()->andReturn([]);
-
 			expect('parse_blocks')->toBeCalled()->with('<h2 id="two">Page 2</h2>');
 
 			$this->inPageNavigation->getItems();
 		});
+
+		it('falls back to using the original page markup when later page fragments do not parse into blocks', function () {
+			global $post;
+			$post = (object) [
+				'post_content' => '<!-- wp:group --><div class="wp-block-group"><h2 id="page-one">Page one heading</h2></div><!--nextpage--><h2 id="page-two">Page two heading</h2></div><!-- /wp:group -->'
+			];
+
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
+			allow('parse_blocks')->toBeCalled()->andReturn([]);
+
+			$result = $this->inPageNavigation->getItems();
+
+			expect(count($result))->toEqual(1);
+			expect($result[0])->toBeAnInstanceOf(\LongReadPlugin\InPageNavigationItem::class);
+			expect($result[0]->title)->toEqual('Page two heading');
+			expect($result[0]->id)->toEqual('page-two');
+		});
+
 		it('only selects items from the current page', function () {
 			global $post;
 			$post = (object) [
