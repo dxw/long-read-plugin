@@ -15,6 +15,10 @@ and this project adheres to
 - [BREAKING] default value for subItems in PageNavigation introduced as part of interface refactor
 - Create interface for parent title
 
+### Added
+
+- Page break in page navigation functionality
+
 ## [v2.4.1] - 2026-05-28
 
 ### Fixed
