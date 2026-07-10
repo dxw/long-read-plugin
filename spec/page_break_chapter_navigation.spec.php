@@ -4,6 +4,11 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 	beforeEach(function () {
 		$this->navigation = new \LongReadPlugin\PageBreakChapterNavigation();
 	});
+
+	it('implements the ChapterNavigationInterface', function () {
+		expect($this->navigation)->toBeAnInstanceOf(\LongReadPlugin\ChapterNavigationInterface::class);
+	});
+
 	describe('::getItems()', function () {
 		beforeEach(function () {
 			global $post;
@@ -37,12 +42,16 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 			$chapter1 = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', null);
 			$chapter2 = new \LongReadPlugin\ChapterNavigationItem('Chapter 2', '/long-read/2/');
 			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
+			expect('apply_filters')->toBeCalled()->times(3);
+			expect('apply_filters')->toBeCalled()->with('the_content', '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>');
+			expect('apply_filters')->toBeCalled()->with('long_read_plugin_chapter_url', null, 123);
+			expect('apply_filters')->toBeCalled()->with('long_read_plugin_chapter_url', '/long-read/2/', 123);
 			$result = $this->navigation->getItems();
 
 			expect($result)->toEqual([$chapter1, $chapter2]);
 		});
 
-		it('sets current chapter url to null when viewing page 2', function () {
+		it('sets current chapter url to null', function () {
 			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
 
 			$result = $this->navigation->getItems();
