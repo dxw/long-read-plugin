@@ -16,6 +16,38 @@ describe(LongReadPlugin\PageBreakInPageNavigation::class, function () {
 			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
 		});
 
+			it('returns only headings from the current page and does not retain previous page headings', function () {
+				global $post;
+				$post = (object) [
+					'post_content' => '<h2 id="page-one" class="wp-block-heading">Page one heading</h2><!--nextpage--><h2 id="page-two" class="wp-block-heading">Page two heading</h2>'
+				];
+
+				allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1, 2);
+				allow('parse_blocks')->toBeCalled()->andRun(function (string $markup) {
+					if (strpos($markup, 'Page one heading') !== false) {
+						return [[
+							'blockName' => 'core/heading',
+							'attrs' => ['level' => 2],
+							'innerHTML' => '<h2 id="page-one" class="wp-block-heading">Page one heading</h2>'
+						]];
+					}
+
+					return [[
+						'blockName' => 'core/heading',
+						'attrs' => ['level' => 2],
+						'innerHTML' => '<h2 id="page-two" class="wp-block-heading">Page two heading</h2>'
+					]];
+				});
+
+				$pageOneResult = $this->inPageNavigation->getItems();
+				$pageTwoResult = $this->inPageNavigation->getItems();
+
+				expect(count($pageOneResult))->toEqual(1);
+				expect($pageOneResult[0]->id)->toEqual('page-one');
+				expect(count($pageTwoResult))->toEqual(1);
+				expect($pageTwoResult[0]->id)->toEqual('page-two');
+			});
+
 		it('returns an empty array when there are no headings on the current page', function () {
 			allow('parse_blocks')->toBeCalled()->andRun(function () {
 				return [];

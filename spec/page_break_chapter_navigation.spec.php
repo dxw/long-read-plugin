@@ -5,12 +5,51 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 		$this->navigation = new \LongReadPlugin\PageBreakChapterNavigation();
 	});
 	describe('::getItems()', function () {
+		beforeEach(function () {
+			global $post;
+			$post = (object) [
+				'ID' => 123,
+				'post_content' => '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>'
+			];
+
+			allow('apply_filters')->toBeCalled()->andRun(function ($filterName, $value) {
+				return $value;
+			});
+			allow('get_permalink')->toBeCalled()->andReturn('/long-read/');
+		});
+
 		it('returns an array of chapter navigation items', function () {
-			$item = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', '/chapter-1');
-			allow('apply_filters')->toBeCalled()->andReturn('Chapter 1', '/chapter-1');
+			$item = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', null);
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
 			$result = $this->navigation->getItems();
 
-			expect($result)->toEqual([$item]);
+			expect($result[0])->toEqual($item);
+		});
+		it('returns an empty array when no chapters are found', function () {
+			global $post;
+			$post->post_content = '';
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
+			$result = $this->navigation->getItems();
+
+			expect($result)->toEqual([]);
+		});
+		it('returns an array with multiple chapters when multiple page breaks are found', function () {
+			$chapter1 = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', null);
+			$chapter2 = new \LongReadPlugin\ChapterNavigationItem('Chapter 2', '/long-read/2/');
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
+			$result = $this->navigation->getItems();
+
+			expect($result)->toEqual([$chapter1, $chapter2]);
+		});
+
+		it('sets current chapter url to null when viewing page 2', function () {
+			allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(2);
+
+			$result = $this->navigation->getItems();
+
+			expect(count($result))->toEqual(2);
+			expect($result[0]->url)->toEqual('/long-read/');
+			expect($result[1]->url)->toBeNull();
 		});
 	});
 });
