@@ -16,7 +16,7 @@ describe(LongReadPlugin\PageBreakParentTitle::class, function () {
 				'ID' => 123
 			];
 
-			allow('get_the_title')->toBeCalled()->andReturn('Parent Post Title');
+			allow('get_the_title')->toBeCalled()->andReturn('Current Post Title');
 			expect('get_the_title')->toBeCalled()->with($post);
 
 			$result = $this->parentTitleRetriever->get();
