@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-class HierarchicalChapterNavigation implements ChapterNavigationInterface
+class MultipageChapterNavigation implements ChapterNavigationInterface
 {
 	public function getItems(): array
 	{
