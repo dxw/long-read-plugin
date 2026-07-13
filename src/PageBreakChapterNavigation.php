@@ -5,12 +5,33 @@ namespace LongReadPlugin;
 class PageBreakChapterNavigation implements ChapterNavigationInterface
 {
 	
-	public function getPages(): array
+	private function getPages(): array
 	{
 		global $post;
-		$fullContent = apply_filters('the_content', $post->post_content);
+		$fullContent = $post->post_content;
 		$pages = explode('<!--nextpage-->', $fullContent);
 		return $pages;
+	}
+
+	private function addNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
+	{
+			
+		$matches = [];
+		preg_match('~<h([1-6])[^>]*>(.*?)</h\1>~is', $page, $matches);
+		if (empty($matches[0])) {
+			return null;
+		}
+
+		$chapterPage = $pageIndex + 1;
+		$chapterUrl = null;
+		if ($chapterPage !== $currentPage) {
+			$chapterUrl = $chapterPage === 1 ? $permalink . '/' : $permalink . '/' . $chapterPage . '/';
+		}
+
+		return new ChapterNavigationItem(
+			trim(strip_tags($matches[0])),
+			apply_filters('long_read_plugin_chapter_url', $chapterUrl, $postId)
+		);
 	}
 
 	public function getItems(): array
@@ -22,22 +43,10 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		$permalink = get_permalink($post);
 		$whiteSpaceFreePermalink = rtrim((string) $permalink, '/');
 		foreach ($pages as $pageIndex => $page) {
-			$regexPattern = "~(<h([2-6]))(.*?>(.*)<\/h[2-6]>)~";
-			preg_match_all($regexPattern, $page, $matches);
-			if (empty($matches[0])) {
-				continue;
+			$item = $this->addNavigationItem($pageIndex, $currentPage, $page, $whiteSpaceFreePermalink, $post->ID);
+			if ($item) {
+				$chapterNavigationItems[] = $item;
 			}
-
-			$chapterPage = $pageIndex + 1;
-			$chapterUrl = null;
-			if ($chapterPage !== $currentPage) {
-				$chapterUrl = $chapterPage === 1 ? $whiteSpaceFreePermalink . '/' : $whiteSpaceFreePermalink . '/' . $chapterPage . '/';
-			}
-
-			$chapterNavigationItems[] = new ChapterNavigationItem(
-				trim(strip_tags($matches[0][0])),
-				apply_filters('long_read_plugin_chapter_url', $chapterUrl, $post->ID)
-			);
 		}
 		
 		return $chapterNavigationItems;
