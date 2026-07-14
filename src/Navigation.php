@@ -20,7 +20,7 @@ class Navigation
 		}
 		$chapterNavItems = static::$chapterNavigation->getItems();
 		$inPageNavItems = static::$inPageNavigation->getItems();
-		
+
 		foreach ($chapterNavItems as $chapterNavItem) {
 			if ($chapterNavItem->url === null) {
 				$chapterNavItem->subItems = $inPageNavItems;

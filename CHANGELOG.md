@@ -19,6 +19,7 @@ and this project adheres to
 
 - Page break in page navigation functionality
 - Page break chapter navigation
+- Page break parent title
 
 ## [v2.4.1] - 2026-05-28
 
