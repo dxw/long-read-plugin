@@ -9,6 +9,6 @@ class MultipageParentTitle implements ParentTitleRetrieverInterface
 		global $post;
 		$ancestors = get_post_ancestors($post);
 		$topLevelAncestor = array_pop($ancestors);
-		return $topLevelAncestor ? get_the_title($topLevelAncestor) ?: null : null;
+		return $topLevelAncestor ? (get_the_title($topLevelAncestor) ?: null) : null;
 	}
 }
