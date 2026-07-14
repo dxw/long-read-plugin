@@ -17,7 +17,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 
 		$matches = [];
 		preg_match('~<h([1-6])[^>]*>(.*?)</h\1>~is', $page, $matches);
-		if (empty($matches[0])) {
+		if (!isset($matches[0]) || !is_string($matches[0]) || trim($matches[0]) === '') {
 			return null;
 		}
 
