@@ -1,6 +1,6 @@
 <?php
 
-if (defined('DXW_PAGE_BREAK_LONG_READ')) {
+if (defined('DXW_PAGE_BREAK_LONG_READ') && DXW_PAGE_BREAK_LONG_READ === true) {
 	$chapterNav = new \LongReadPlugin\PageBreakChapterNavigation();
 	$inPageNav = new \LongReadPlugin\PageBreakInPageNavigation();
 	$parentTitle = new \LongReadPlugin\PageBreakParentTitle();
