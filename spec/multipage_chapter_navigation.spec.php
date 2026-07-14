@@ -1,8 +1,8 @@
 <?php
 
-describe(\LongReadPlugin\HierarchicalChapterNavigation::class, function () {
+describe(\LongReadPlugin\MultipageChapterNavigation::class, function () {
 	beforeEach(function () {
-		$this->chapterNavigation = new \LongReadPlugin\HierarchicalChapterNavigation();
+		$this->chapterNavigation = new \LongReadPlugin\MultipageChapterNavigation();
 	});
 
 	describe('->getItems()', function () {

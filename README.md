@@ -13,13 +13,21 @@ A single "long read" is composed of a parent long read post, and it's direct chi
 
 ## How to use this plugin
 
-Recommended plugin to run alongside this:
+The plugin offers two approaches to creating long reads:
+- [default] using multiple nested posts
+- using page breaks within a single posts to generate the sub pages
+
+To select the page break approach, set the environment variable 'DXW_PAGE_BREAK_LONG_READ' to true.
+
+Recommended plugin to run alongside the default multiple page approach:
 
 - [Nested Pages](https://en-gb.wordpress.org/plugins/wp-nested-pages/). Long read chapters are ordered according to the WordPress "menu order". This plugin allows you to set that via clicking & dragging in the admin post listing, rather than having to manually set the menu order on each individual long read post.
 
 1. Install this plugin (ideally via [Whippet](https://github.com/dxw/whippet)), and activate it
-1. Add a `single-long-read.php` template to your site's theme. This will display all long read content.
-1. Within that template, call `LongReadPlugin\Navigation::getItems()` to return the data required to build the navigation. See this repo's [example template](/template/single-long-read.php) for how to use the data returned. The method returns an array of objects, structured as follows:
+2. Add a `single-long-read.php` template to your site's theme. This will display all long read content.
+3. Within that template, call `LongReadPlugin\Navigation::getItems()` to return the data required to build the navigation. See this repo's [example template](/template/single-long-read.php) for how to use the data returned. 
+
+If using the default approach, the method returns an array of objects, structured as follows:
     ```php
     [
         (object) [
@@ -57,7 +65,46 @@ Recommended plugin to run alongside this:
         ...
     ]
     ```
-1. Style your long read template as required.
+If using the page break approach - the structure of the array will be: 
+ ```php
+    [
+        (object) [
+            'title' => 'The parent long read post'
+            'url' => 'http://url-of-parent-long-read-post'
+        ],
+        (object) [
+            'title' => 'The first header found after the first page break'
+            'url' => 'http://url-of-parent-long-read-post/2'
+        ],
+        (object) [
+            'title' => 'The first header found after the second page break'
+            'url' => 'http://url-of-parent-long-read-post/3'
+        ],
+        (object) [
+            'title' => 'The first header after the third page break, and currently viewed post',
+            'url' => null //The post currently being viewed will always have a null url
+            'subItems' => [
+                // An array of the h2s within the currently viewed post
+                (object) [
+                    'title' => 'First heading 2'
+                    'id' => 'id-of-first-h2',
+                ],
+                (object) [
+                    'title' => 'Second heading 2'
+                    'id' => 'id-of-second-h2',
+                ],
+                ...
+            ]
+        ],
+        (object) []
+            'title' => 'The first header after the fourth page break'
+            'url' => 'http://url-of-parent-long-read-post/5'
+        ],
+        ...
+    ]
+    ```
+
+4. Style your long read template as required.
 
 ## PHP version
 

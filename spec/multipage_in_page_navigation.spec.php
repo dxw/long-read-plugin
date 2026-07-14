@@ -1,8 +1,8 @@
 <?php
 
-describe(LongReadPlugin\HierarchicalInPageNavigation::class, function () {
+describe(LongReadPlugin\MultipageInPageNavigation::class, function () {
 	beforeEach(function () {
-		$this->inPageNavigation = new \LongReadPlugin\HierarchicalInPageNavigation();
+		$this->inPageNavigation = new \LongReadPlugin\MultipageInPageNavigation();
 	});
 
 	describe('->getItems()', function () {

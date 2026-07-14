@@ -20,6 +20,7 @@ and this project adheres to
 - Page break in page navigation functionality
 - Page break chapter navigation
 - Page break parent title
+- Switch between long read types
 
 ## [v2.4.1] - 2026-05-28
 
