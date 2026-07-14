@@ -4,7 +4,6 @@ namespace LongReadPlugin;
 
 class PageBreakChapterNavigation implements ChapterNavigationInterface
 {
-	
 	private function getPages(): array
 	{
 		global $post;
@@ -15,7 +14,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 
 	private function addNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
 	{
-			
+
 		$matches = [];
 		preg_match('~<h([1-6])[^>]*>(.*?)</h\1>~is', $page, $matches);
 		if (empty($matches[0])) {
@@ -48,7 +47,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 				$chapterNavigationItems[] = $item;
 			}
 		}
-		
+
 		return $chapterNavigationItems;
 	}
 }
