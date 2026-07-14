@@ -18,6 +18,7 @@ and this project adheres to
 ### Added
 
 - Page break in page navigation functionality
+- Page break chapter navigation
 
 ## [v2.4.1] - 2026-05-28
 
