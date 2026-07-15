@@ -5,7 +5,7 @@
  *
  * @package     LongReadPlugin
  * @author      dxw
- * @copyright   2020
+ * @copyright   2026
  * @license     MIT
  *
  * @long-read-plugin
@@ -13,7 +13,7 @@
  * Plugin URI: https://github.com/dxw/long-read-plugin
  * Description: Adds the underlying functionality to enable long-reads
  * Author: dxw
- * Version: 2.4.1
+ * Version: 3.0.0
  * Network: false
  */
 
