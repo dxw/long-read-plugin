@@ -61,7 +61,7 @@ class PageBreakInPageNavigation implements InPageNavigationInterface
 
 	public function getItems(): array
 	{
-		
+
 		$this->inPageNavItems = [];
 		$currentPageMarkup = $this->getCurrentPageMarkup();
 		$blocks = parse_blocks($currentPageMarkup);
