@@ -4,7 +4,7 @@ namespace LongReadPlugin;
 
 class PageBreakInPageNavigation implements InPageNavigationInterface
 {
-	/** @var array $inPageNavItems */
+	/** @var array<InPageNavigationItem> */
 	private $inPageNavItems = [];
 
 	private function findHeadingMarkup(string $markup): void
@@ -41,27 +41,31 @@ class PageBreakInPageNavigation implements InPageNavigationInterface
 		);
 	}
 
-	private function findHeadingBlocks(array $blocks): void
+	private function findHeadingBlocks(array $blocks): bool
 	{
+		$foundHeadings = false;
 		foreach ($blocks as $block) {
 			if ($block['blockName'] == 'core/heading'  && array_key_exists('attrs', $block) && (!isset($block['attrs']['level']) || $block['attrs']['level'] == 2)) {
 				if (empty(trim(strip_tags($block['innerHTML'])))) {
 					continue;
 				}
 				$this->inPageNavItems[] = $this->parseHeading($block["innerHTML"]);
+				$foundHeadings = true;
 			} elseif ($block['blockName'] == 'acf/group-block' || $block['blockName'] == 'core/group') {
-				$this->findHeadingBlocks($block['innerBlocks']);
+				$foundHeadings = $this->findHeadingBlocks($block['innerBlocks']) || $foundHeadings;
 			}
 		}
+
+		return $foundHeadings;
 	}
 
 	public function getItems(): array
 	{
+
 		$this->inPageNavItems = [];
 		$currentPageMarkup = $this->getCurrentPageMarkup();
 		$blocks = parse_blocks($currentPageMarkup);
-		$this->findHeadingBlocks($blocks);
-		if (count($this->inPageNavItems) === 0) {
+		if (!$this->findHeadingBlocks($blocks)) {
 			$this->findHeadingMarkup($currentPageMarkup);
 		}
 		return $this->inPageNavItems;
