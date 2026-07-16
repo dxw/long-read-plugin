@@ -12,15 +12,17 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 	describe('::getItems()', function () {
 		beforeEach(function () {
 			global $post;
-			$post = (object) [
-				'ID' => 123,
-				'post_content' => '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>'
-			];
+			$post = \Kahlan\Plugin\Double::instance([
+				'class' => 'WP_Post'
+			]);
+			$post->ID = 123;
+			$post->post_content =  '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>';
 
 			allow('apply_filters')->toBeCalled()->andRun(function ($filterName, $value) {
 				return $value;
 			});
 			allow('get_permalink')->toBeCalled()->andReturn('/long-read/');
+			allow('is_preview')->toBeCalled()->andReturn(false);
 		});
 
 		it('returns an array of chapter navigation items', function () {
@@ -58,6 +60,31 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 			expect(count($result))->toEqual(2);
 			expect($result[0]->url)->toEqual('/long-read/');
 			expect($result[1]->url)->toBeNull();
+		});
+
+		context('view is a preview', function () {
+			it('returns preview URLs', function () {
+				$chapter1 = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', null);
+				$chapter2 = new \LongReadPlugin\ChapterNavigationItem('Chapter 2', 'http://localhost/preview/2');
+				allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
+				allow('is_preview')->toBeCalled()->andReturn(true);
+				allow('get_preview_post_link')->toBeCalled()->andRun(function ($postId, $args) {
+					return 'http://localhost/preview/' . $args['page'];
+				});
+
+				$result = $this->navigation->getItems();
+				expect($result)->toEqual([$chapter1, $chapter2]);
+			});
+			it('returns standard URLs if preview link is null', function () {
+				$chapter1 = new \LongReadPlugin\ChapterNavigationItem('Chapter 1', null);
+				$chapter2 = new \LongReadPlugin\ChapterNavigationItem('Chapter 2', '/long-read/2/');
+				allow('get_query_var')->toBeCalled()->with('page', 1)->andReturn(1);
+				allow('is_preview')->toBeCalled()->andReturn(true);
+				allow('get_preview_post_link')->toBeCalled()->andReturn(null);
+
+				$result = $this->navigation->getItems();
+				expect($result)->toEqual([$chapter1, $chapter2]);
+			});
 		});
 	});
 });
