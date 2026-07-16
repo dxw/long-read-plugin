@@ -24,6 +24,10 @@ class Navigation
 		foreach ($chapterNavItems as $chapterNavItem) {
 			if ($chapterNavItem->url === null) {
 				$chapterNavItem->subItems = $inPageNavItems;
+				// Don't include in-page nav items where the heading we found is actually the chapter title
+				if (array_key_exists(0, $chapterNavItem->subItems) && $chapterNavItem->subItems[0]->title === $chapterNavItem->title) {
+					unset($chapterNavItem->subItems[0]);
+				}
 			}
 		}
 		return $chapterNavItems;

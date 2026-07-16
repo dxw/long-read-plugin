@@ -58,5 +58,50 @@ describe(LongReadPlugin\Navigation::class, function () {
 			expect($result[2]->title)->toEqual('Chapter Three');
 			expect($result[2]->url)->toEqual('http://chapter-three');
 		});
+
+		it('does not include in-page nav items where the first heading we found is being used as the page title', function () {
+			$this->chapterNavigation = Double::instance(['extends' => '\LongReadPlugin\MultipageChapterNavigation']);
+			$this->inPageNavigation = Double::instance(['extends' => '\LongReadPlugin\MultipageInPageNavigation']);
+			allow($this->chapterNavigation)->toReceive('getItems')->andReturn([
+				(object) [
+					'title' => 'Chapter One',
+					'url' => 'http://chapter-one'
+				],
+				(object) [
+					'title' => 'Duplicate Heading',
+					'url' => null
+				],
+				(object) [
+					'title' => 'Chapter Three',
+					'url' => 'http://chapter-three'
+				]
+			]);
+			allow($this->inPageNavigation)->toReceive('getItems')->andReturn([
+				(object) [
+					'title' => 'Duplicate Heading',
+					'id' => 'heading-one'
+				],
+				(object) [
+					'title' => 'Heading Two',
+					'id' => 'heading-two'
+				]
+			]);
+			$navigation = new LongReadPlugin\Navigation(
+				$this->chapterNavigation,
+				$this->inPageNavigation
+			);
+
+			$result = LongReadPlugin\Navigation::getItems();
+
+			expect(count($result))->toEqual(3);
+			expect($result[0]->title)->toEqual('Chapter One');
+			expect($result[0]->url)->toEqual('http://chapter-one');
+			expect($result[1]->title)->toEqual('Duplicate Heading');
+			expect(count($result[1]->subItems))->toEqual(1);
+			expect($result[1]->subItems[1]->title)->toEqual('Heading Two');
+			expect($result[1]->subItems[1]->id)->toEqual('heading-two');
+			expect($result[2]->title)->toEqual('Chapter Three');
+			expect($result[2]->url)->toEqual('http://chapter-three');
+		});
 	});
 });
