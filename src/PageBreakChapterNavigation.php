@@ -34,9 +34,8 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		return $chapterUrl;
 	}
 
-	private function addNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
+	private function createNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
 	{
-
 		$title = $this->getChapterTitle($page);
 		if ($title === null) {
 			return null;
@@ -59,7 +58,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		$permalink = get_permalink($post);
 		$whiteSpaceFreePermalink = rtrim((string) $permalink, '/');
 		foreach ($pages as $pageIndex => $page) {
-			$item = $this->addNavigationItem($pageIndex, $currentPage, $page, $whiteSpaceFreePermalink, $post->ID);
+			$item = $this->createNavigationItem($pageIndex, $currentPage, $page, $whiteSpaceFreePermalink, $post->ID);
 			if ($item) {
 				$chapterNavigationItems[] = $item;
 			}
