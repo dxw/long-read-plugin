@@ -12,10 +12,11 @@ describe(\LongReadPlugin\PageBreakChapterNavigation::class, function () {
 	describe('::getItems()', function () {
 		beforeEach(function () {
 			global $post;
-			$post = (object) [
-				'ID' => 123,
-				'post_content' => '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>'
-			];
+			$post = \Kahlan\Plugin\Double::instance([
+				'class' => 'WP_Post'
+			]);
+			$post->ID = 123;
+			$post->post_content =  '<h2>Chapter 1</h2><!--nextpage--><h2>Chapter 2</h2>';
 
 			allow('apply_filters')->toBeCalled()->andRun(function ($filterName, $value) {
 				return $value;
