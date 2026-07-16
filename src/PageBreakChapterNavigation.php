@@ -10,15 +10,18 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		return $pages;
 	}
 
-	private function addNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
+	private function getChapterTitle(string $page): ?string
 	{
-
 		$matches = [];
 		preg_match('~<h([1-6])[^>]*>(.*?)</h\1>~is', $page, $matches);
 		if (!isset($matches[0]) || !is_string($matches[0]) || trim($matches[0]) === '') {
 			return null;
 		}
+		return trim(strip_tags($matches[0]));
+	}
 
+	private function getChapterUrl(int $pageIndex, int $currentPage, string $permalink, int $postId): ?string
+	{
 		$chapterPage = $pageIndex + 1;
 		$chapterUrl = null;
 		if ($chapterPage !== $currentPage) {
@@ -28,10 +31,22 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 				$chapterUrl = $previewLink ?? $chapterUrl;
 			}
 		}
+		return $chapterUrl;
+	}
+
+	private function addNavigationItem(int $pageIndex, int $currentPage, string $page, string $permalink, int $postId): ?ChapterNavigationItem
+	{
+
+		$title = $this->getChapterTitle($page);
+		if ($title === null) {
+			return null;
+		}
+
+		$url = $this->getChapterUrl($pageIndex, $currentPage, $permalink, $postId);
 
 		return new ChapterNavigationItem(
-			trim(strip_tags($matches[0])),
-			apply_filters('long_read_plugin_chapter_url', $chapterUrl, $postId)
+			$title,
+			apply_filters('long_read_plugin_chapter_url', $url, $postId)
 		);
 	}
 
