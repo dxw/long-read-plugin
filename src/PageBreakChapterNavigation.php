@@ -25,6 +25,10 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		$chapterUrl = null;
 		if ($chapterPage !== $currentPage) {
 			$chapterUrl = $chapterPage === 1 ? $permalink . '/' : $permalink . '/' . $chapterPage . '/';
+			if (is_preview()) {
+				$previewLink = get_preview_post_link($postId, ['page' => $chapterPage]);
+				$chapterUrl = $previewLink ?? $chapterUrl;
+			}
 		}
 
 		return new ChapterNavigationItem(
