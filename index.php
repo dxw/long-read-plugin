@@ -13,7 +13,7 @@
  * Plugin URI: https://github.com/dxw/long-read-plugin
  * Description: Adds the underlying functionality to enable long-reads
  * Author: dxw
- * Version: 3.0.0
+ * Version: 3.1.0
  * Network: false
  */
 
