@@ -12,7 +12,7 @@ and this project adheres to
 
 - Issue where first in-page nav item would duplicate the title of that chapter.
 
-## [v3.0.0] - 2026-07-26
+## [v3.0.0] - 2026-07-15
 
 ### Changed
 
