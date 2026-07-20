@@ -28,7 +28,8 @@ Recommended plugin to run alongside the default multiple page approach:
 3. Within that template, call `LongReadPlugin\Navigation::getItems()` to return the data required to build the navigation. See this repo's [example template](/template/single-long-read.php) for how to use the data returned. 
 
 If using the default approach, the method returns an array of objects, structured as follows:
-    ```php
+
+ ```php
     [
         (object) [
             'title' => 'The parent long read post'
@@ -64,8 +65,10 @@ If using the default approach, the method returns an array of objects, structure
         ],
         ...
     ]
-    ```
-If using the page break approach - the structure of the array will be: 
+ ```
+
+If using the page break approach - the structure of the array will be:
+
  ```php
     [
         (object) [
@@ -102,7 +105,9 @@ If using the page break approach - the structure of the array will be:
         ],
         ...
     ]
-    ```
+ ```
+
+i.e. the data structure is the same, it just is split either by parent/child posts, or by page breaks. This should mean that the same template logic can be used in either case.
 
 4. Style your long read template as required.
 
