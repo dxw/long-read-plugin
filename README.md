@@ -17,7 +17,7 @@ The plugin offers two approaches to creating long reads:
 - [default] using multiple nested posts
 - using page breaks within a single posts to generate the sub pages
 
-To select the page break approach, set the environment variable 'DXW_PAGE_BREAK_LONG_READ' to true.
+To select the page break approach, set the environment variable `DXW_PAGE_BREAK_LONG_READ` to true.
 
 Recommended plugin to run alongside the default multiple page approach:
 
