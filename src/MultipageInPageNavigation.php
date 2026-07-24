@@ -4,41 +4,17 @@ namespace LongReadPlugin;
 
 class MultipageInPageNavigation implements InPageNavigationInterface
 {
-	/** @var array $inPageNavItems */
-	private $inPageNavItems = [];
+	private HeadingBlockParser $headingBlockParser;
 
-	private function parseHeading(string $html): InPageNavigationItem
+	public function __construct(?HeadingBlockParser $headingBlockParser = null)
 	{
-		$matches = [];
-		$id = null;
-		if (preg_match('/(id=")(.*?)"/', $html, $matches)) {
-			$id = $matches[2] ?? null;
-		}
-		return new InPageNavigationItem(
-			trim(strip_tags($html)),
-			$id
-		);
-	}
-
-	private function findHeadingBlocks(array $blocks): void
-	{
-		foreach ($blocks as $block) {
-			if ($block['blockName'] == 'core/heading'  && array_key_exists('attrs', $block) && (!isset($block['attrs']['level']) || $block['attrs']['level'] == 2)) {
-				if (empty(trim(strip_tags($block['innerHTML'])))) {
-					continue;
-				}
-				$this->inPageNavItems[] = $this->parseHeading($block["innerHTML"]);
-			} elseif ($block['blockName'] == 'acf/group-block' || $block['blockName'] == 'core/group') {
-				$this->findHeadingBlocks($block['innerBlocks']);
-			}
-		}
+		$this->headingBlockParser = $headingBlockParser ?? new HeadingBlockParser();
 	}
 
 	public function getItems(): array
 	{
 		global $post;
 		$blocks = parse_blocks($post->post_content);
-		$this->findHeadingBlocks($blocks);
-		return $this->inPageNavItems;
+		return $this->headingBlockParser->collectHeadingItems($blocks);
 	}
 }
