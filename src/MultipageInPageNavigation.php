@@ -36,6 +36,7 @@ class MultipageInPageNavigation implements InPageNavigationInterface
 
 	public function getItems(): array
 	{
+		$this->inPageNavItems = [];
 		global $post;
 		$blocks = parse_blocks($post->post_content);
 		$this->findHeadingBlocks($blocks);

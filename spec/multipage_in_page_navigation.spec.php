@@ -121,5 +121,24 @@ describe(LongReadPlugin\MultipageInPageNavigation::class, function () {
 			expect($result[0]->title)->toEqual("First heading");
 			expect($result[0]->id)->toEqual('first-heading');
 		});
+
+		it('returns the same items when called twice on the same instance', function () {
+			global $post;
+			$post->post_content = 'Some content';
+			$blocks = [
+				[
+					'blockName' => 'core/heading',
+					'attrs' => [],
+					'innerHTML' => '<h2 id="first-heading">First heading</h2>'
+				],
+			];
+			allow('parse_blocks')->toBeCalled()->andReturn($blocks);
+
+			$firstResult = $this->inPageNavigation->getItems();
+			$secondResult = $this->inPageNavigation->getItems();
+
+			expect(count($firstResult))->toEqual(1);
+			expect(count($secondResult))->toEqual(1);
+		});
 	});
 });
