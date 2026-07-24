@@ -4,12 +4,6 @@ namespace LongReadPlugin;
 
 class PageBreakChapterNavigation implements ChapterNavigationInterface
 {
-	private function getPages(\WP_Post $post): array
-	{
-		$pages = explode('<!--nextpage-->', $post->post_content);
-		return $pages;
-	}
-
 	private function getChapterTitle(string $page): ?string
 	{
 		$matches = [];
@@ -54,7 +48,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		global $post;
 		$chapterNavigationItems = [];
 		$currentPage = max(1, (int) get_query_var('page', 1));
-		$pages = $this->getPages($post);
+		$pages = explode('<!--nextpage-->', $post->post_content);
 		$permalink = get_permalink($post);
 		$whiteSpaceFreePermalink = rtrim((string) $permalink, '/');
 		foreach ($pages as $pageIndex => $page) {
