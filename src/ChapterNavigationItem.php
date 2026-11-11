@@ -2,7 +2,8 @@
 
 namespace LongReadPlugin;
 
-class ChapterNavigationItem
+/** @api */
+final class ChapterNavigationItem
 {
 	public readonly string $title;
 	public readonly ?string $url;

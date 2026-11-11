@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-class PageBreakChapterNavigation implements ChapterNavigationInterface
+final class PageBreakChapterNavigation implements ChapterNavigationInterface
 {
 	private function getPages(\WP_Post $post): array
 	{
@@ -49,6 +49,7 @@ class PageBreakChapterNavigation implements ChapterNavigationInterface
 		);
 	}
 
+	#[\Override]
 	public function getItems(): array
 	{
 		global $post;

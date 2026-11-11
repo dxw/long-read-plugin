@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-class MultipageInPageNavigation implements InPageNavigationInterface
+final class MultipageInPageNavigation implements InPageNavigationInterface
 {
 	/** @var array $inPageNavItems */
 	private $inPageNavItems = [];
@@ -34,6 +34,7 @@ class MultipageInPageNavigation implements InPageNavigationInterface
 		}
 	}
 
+	#[\Override]
 	public function getItems(): array
 	{
 		$this->inPageNavItems = [];

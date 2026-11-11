@@ -2,7 +2,7 @@
 
 namespace LongReadPlugin;
 
-class PageBreakInPageNavigation implements InPageNavigationInterface
+final class PageBreakInPageNavigation implements InPageNavigationInterface
 {
 	/** @var array<InPageNavigationItem> */
 	private $inPageNavItems = [];
@@ -59,6 +59,7 @@ class PageBreakInPageNavigation implements InPageNavigationInterface
 		return $foundHeadings;
 	}
 
+	#[\Override]
 	public function getItems(): array
 	{
 

@@ -2,7 +2,8 @@
 
 namespace LongReadPlugin;
 
-class ParentTitle
+/** @api */
+final class ParentTitle
 {
 	private static ParentTitleRetrieverInterface $getter;
 

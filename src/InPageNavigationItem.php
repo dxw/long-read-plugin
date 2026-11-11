@@ -2,7 +2,8 @@
 
 namespace LongReadPlugin;
 
-class InPageNavigationItem
+/** @api */
+final class InPageNavigationItem
 {
 	public readonly string $title;
 	public readonly ?string $id;

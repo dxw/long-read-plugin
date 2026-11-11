@@ -2,8 +2,9 @@
 
 namespace LongReadPlugin;
 
-class MultipageParentTitle implements ParentTitleRetrieverInterface
+final class MultipageParentTitle implements ParentTitleRetrieverInterface
 {
+	#[\Override]
 	public function get(): ?string
 	{
 		global $post;

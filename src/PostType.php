@@ -2,8 +2,10 @@
 
 namespace LongReadPlugin;
 
-class PostType implements \Dxw\Iguana\Registerable
+/** @api */
+final class PostType implements \Dxw\Iguana\Registerable
 {
+	#[\Override]
 	public function register(): void
 	{
 		add_action('init', [$this, 'registerPostType']);
