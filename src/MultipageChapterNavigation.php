@@ -2,8 +2,9 @@
 
 namespace LongReadPlugin;
 
-class MultipageChapterNavigation implements ChapterNavigationInterface
+final class MultipageChapterNavigation implements ChapterNavigationInterface
 {
+	#[\Override]
 	public function getItems(): array
 	{
 		$postStatus = apply_filters('long_read_plugin_post_status', ['publish']);

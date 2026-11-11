@@ -2,8 +2,10 @@
 
 namespace LongReadPlugin;
 
-class HeadingAnchors implements \Dxw\Iguana\Registerable
+/** @api */
+final class HeadingAnchors implements \Dxw\Iguana\Registerable
 {
+	#[\Override]
 	public function register(): void
 	{
 		add_filter('block_editor_settings_all', [$this, 'enforceAnchors']);

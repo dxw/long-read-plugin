@@ -2,6 +2,7 @@
 
 namespace LongReadPlugin;
 
+/** @api */
 interface InPageNavigationInterface
 {
 	/** @return InPageNavigationItem[] */

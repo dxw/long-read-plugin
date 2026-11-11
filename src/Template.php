@@ -2,10 +2,12 @@
 
 namespace LongReadPlugin;
 
-class Template implements \Dxw\Iguana\Registerable
+/** @api */
+final class Template implements \Dxw\Iguana\Registerable
 {
 	public const TEMPLATE_FILE = 'single-long-read.php';
 
+	#[\Override]
 	public function register(): void
 	{
 		add_filter('single_template', [$this, 'useDefault'], 99);

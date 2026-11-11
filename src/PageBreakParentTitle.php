@@ -2,8 +2,9 @@
 
 namespace LongReadPlugin;
 
-class PageBreakParentTitle implements ParentTitleRetrieverInterface
+final class PageBreakParentTitle implements ParentTitleRetrieverInterface
 {
+	#[\Override]
 	public function get(): string
 	{
 		global $post;

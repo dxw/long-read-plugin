@@ -2,6 +2,7 @@
 
 namespace LongReadPlugin;
 
+/** @api */
 interface ChapterNavigationInterface
 {
 	/** @return ChapterNavigationItem[] */

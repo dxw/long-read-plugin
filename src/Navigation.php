@@ -2,7 +2,8 @@
 
 namespace LongReadPlugin;
 
-class Navigation
+/** @api */
+final class Navigation
 {
 	private static ChapterNavigationInterface $chapterNavigation;
 	private static InPageNavigationInterface $inPageNavigation;

@@ -2,8 +2,10 @@
 
 namespace LongReadPlugin;
 
-class Options implements \Dxw\Iguana\Registerable
+/** @api */
+final class Options implements \Dxw\Iguana\Registerable
 {
+	#[\Override]
 	public function register(): void
 	{
 		add_action('acf/init', [$this, 'addOptionsPage']);
